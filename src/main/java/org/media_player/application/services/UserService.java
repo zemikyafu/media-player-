@@ -7,6 +7,7 @@ import org.media_player.domain.entities.user.Role;
 import org.media_player.domain.entities.user.User;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class UserService {
     private final UserRepository userRepository;
@@ -52,5 +53,18 @@ public class UserService {
 
     public void deleteUser(User user) {
         userRepository.deleteUser(user);
+    }
+
+    public List<User> findAllUser() {
+        return userRepository.findAllUser();
+    }
+
+    public User findByEmail(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            return userRepository.findByEmail(email).get();
+        } else {
+            System.err.println("User not found");
+            return null;
+        }
     }
 }

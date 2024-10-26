@@ -6,7 +6,6 @@ import org.media_player.infrastructure.in_memory_db.InMemoryUserDB;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class UserRepositoryImpl implements UserRepository {
 
