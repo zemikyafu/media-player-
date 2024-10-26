@@ -1,4 +1,4 @@
-package org.example;
+package org.media_player;
 
 public class Main {
     public static void main(String[] args) {
