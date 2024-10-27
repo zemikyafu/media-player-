@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
 
-    InMemoryUserDB inMemoryUserDB = new InMemoryUserDB();
+    private final InMemoryUserDB inMemoryUserDB;
+
+    public UserRepositoryImpl(InMemoryUserDB inMemoryUserDB) {
+        this.inMemoryUserDB = inMemoryUserDB;
+    }
 
     @Override
     public void registerUser(User user) {

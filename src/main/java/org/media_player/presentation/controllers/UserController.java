@@ -7,7 +7,7 @@ import org.media_player.domain.entities.user.User;
 import java.util.List;
 
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     UserController(UserService userService) {
         this.userService = userService;
