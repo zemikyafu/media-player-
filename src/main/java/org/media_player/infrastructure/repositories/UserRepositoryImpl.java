@@ -9,10 +9,18 @@ import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
 
+    private static UserRepositoryImpl instance;
     private final InMemoryUserDB inMemoryUserDB;
 
-    public UserRepositoryImpl(InMemoryUserDB inMemoryUserDB) {
+    private UserRepositoryImpl(InMemoryUserDB inMemoryUserDB) {
         this.inMemoryUserDB = inMemoryUserDB;
+    }
+
+    public static synchronized UserRepositoryImpl getInstance(InMemoryUserDB inMemoryUserDB) {
+        if (instance == null) {
+            instance = new UserRepositoryImpl(inMemoryUserDB);
+        }
+        return instance;
     }
 
     @Override
@@ -38,11 +46,6 @@ public class UserRepositoryImpl implements UserRepository {
         inMemoryUserDB.deleteUserById(user.getId());
     }
 
-
-    @Override
-    public void deleteUserByEmail(String email) {
-        inMemoryUserDB.deleteUserByEmail(email);
-    }
 
     @Override
     public void updateUser(User user) {

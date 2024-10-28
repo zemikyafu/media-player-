@@ -8,10 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class MediaFileRepositoryImpl implements MediaFileRepository {
-    private final InMemoryMediaFileDB inMemoryMediaFileDB;
 
-    public MediaFileRepositoryImpl(InMemoryMediaFileDB inMemoryMediaFileDB) {
+    private final InMemoryMediaFileDB inMemoryMediaFileDB;
+    private static MediaFileRepositoryImpl instance;
+
+    private MediaFileRepositoryImpl(InMemoryMediaFileDB inMemoryMediaFileDB) {
         this.inMemoryMediaFileDB = inMemoryMediaFileDB;
+    }
+    public static synchronized MediaFileRepositoryImpl getInstance(InMemoryMediaFileDB inMemoryMediaFileDB) {
+        if (instance == null) {
+            instance = new MediaFileRepositoryImpl(inMemoryMediaFileDB);
+        }
+        return instance;
     }
 
     @Override
