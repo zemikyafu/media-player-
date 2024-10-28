@@ -34,6 +34,7 @@ public class VideoPlayListService implements PlayListService<Video> {
             throw new IllegalArgumentException("Video already exists in the playlist");
         }
         playList.addMediaFile(mediaFile);
+        playListRepository.updatePlayList(playList);
     }
 
     @Override

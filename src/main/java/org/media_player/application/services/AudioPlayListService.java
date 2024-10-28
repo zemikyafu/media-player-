@@ -33,6 +33,7 @@ public class AudioPlayListService implements PlayListService<Audio> {
             throw new IllegalArgumentException("Audio already exists in the playlist");
         }
         playList.addMediaFile(mediaFile);
+        playListRepository.updatePlayList(playList);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class AudioPlayListService implements PlayListService<Audio> {
             throw new IllegalArgumentException("Audio does not exist in the playlist");
         }
         playList.removeMediaFile(mediaFile);
+        playListRepository.updatePlayList(playList);
     }
 
     @Override
