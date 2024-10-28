@@ -1,7 +1,7 @@
 package org.media_player.application.exceptions;
 
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
+public class UserException extends RuntimeException {
+    public UserException(String message) {
         super(message);
     }
 }

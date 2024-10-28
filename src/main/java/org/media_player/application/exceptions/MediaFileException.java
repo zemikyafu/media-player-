@@ -1,7 +1,7 @@
 package org.media_player.application.exceptions;
 
-public class MediaFileNotFoundException extends RuntimeException {
-    public MediaFileNotFoundException(String message) {
+public class MediaFileException extends RuntimeException {
+    public MediaFileException(String message) {
         super(message);
     }
 }

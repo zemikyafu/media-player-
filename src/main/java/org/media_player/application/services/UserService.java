@@ -1,7 +1,7 @@
 package org.media_player.application.services;
 
 import org.media_player.application.exceptions.InvalidPasswordException;
-import org.media_player.application.exceptions.UserNotFoundException;
+import org.media_player.application.exceptions.UserException;
 import org.media_player.domain.abstractions.UserRepository;
 import org.media_player.domain.entities.user.Role;
 import org.media_player.domain.entities.user.User;
@@ -12,11 +12,12 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final HashService hashService;
+    private final AuthorizationService authorizationService;
 
-    public UserService(UserRepository userRepository, HashService hashService) {
+    public UserService(UserRepository userRepository, HashService hashService, AuthorizationService authorizationService) {
         this.userRepository = userRepository;
         this.hashService = hashService;
-
+        this.authorizationService = authorizationService;
     }
 
     public void signup(String name, String email, String password) {
@@ -32,26 +33,17 @@ public class UserService {
         }
     }
 
-    public void login(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
-        try {
-            String hashedPassword = hashService.hash(password);
-            if (!user.getPassword().equals(hashedPassword)) {
-                throw new InvalidPasswordException("Invalid login password");
-            }
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println("Hashing algorithm not found" + e.getMessage());
-
+    public void updateUser(User loggedInUser, User updatedUser) {
+        if (!authorizationService.isAdmin(loggedInUser)) {
+            throw new UserException("Only admin can update user");
         }
-
-    }
-
-    public void updateRole(User updatedUser, Role role) {
-        updatedUser.setRole(role);
         userRepository.updateUser(updatedUser);
     }
 
-    public void deleteUser(User user) {
+    public void deleteUser(User loggedInUser, User user) {
+        if (!authorizationService.isAdmin(loggedInUser)) {
+            throw new UserException("Only admin can delete user");
+        }
         userRepository.deleteUser(user);
     }
 
@@ -63,8 +55,7 @@ public class UserService {
         if (userRepository.findByEmail(email).isPresent()) {
             return userRepository.findByEmail(email).get();
         } else {
-            System.err.println("User not found");
-            return null;
+            throw new UserException("User not found with email: " + email);
         }
     }
 }

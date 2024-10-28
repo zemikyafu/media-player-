@@ -1,9 +1,8 @@
 package org.media_player.infrastructure.in_memory_db;
 
-import org.media_player.application.exceptions.UserNotFoundException;
+import org.media_player.application.exceptions.UserException;
 import org.media_player.domain.entities.user.User;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +53,7 @@ public class InMemoryUserDB {
             user.get().setPassword(updatedUser.getPassword());
             user.get().setRole(updatedUser.getRole());
         } else {
-            throw new UserNotFoundException("User not found with id: " + id);
+            throw new UserException("User not found with id: " + id);
         }
 
     }

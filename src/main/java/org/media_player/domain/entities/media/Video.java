@@ -45,4 +45,8 @@ public class Video implements MediaFile {
     public void setVolume(int volume) {
         System.out.println("Setting volume to: " + volume);
     }
+
+    public void setBrightness(int brightness) {
+        System.out.println("Setting brightness to: " + brightness);
+    }
 }

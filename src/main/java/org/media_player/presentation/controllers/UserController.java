@@ -26,17 +26,12 @@ public class UserController {
 
     }
 
-    public void login(String email, String password) {
-        userService.login(email, password);
-
+    public void updateUser(User loggedInUser,User user) {
+        userService.updateUser(loggedInUser,user);
     }
 
-    public void updateUser(User user, Role role) {
-        userService.updateRole(user, role);
-    }
-
-    public void deleteUser(User user) {
-        userService.deleteUser(user);
+    public void deleteUser(User loggedInUser,User user) {
+        userService.deleteUser(loggedInUser,user);
     }
 
 

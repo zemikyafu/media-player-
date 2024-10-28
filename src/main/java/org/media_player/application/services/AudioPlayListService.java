@@ -1,7 +1,7 @@
 package org.media_player.application.services;
 
-import org.media_player.application.exceptions.MediaFileNotFoundException;
-import org.media_player.application.exceptions.PlayListNotFoundException;
+import org.media_player.application.exceptions.MediaFileException;
+import org.media_player.application.exceptions.PlayListException;
 import org.media_player.domain.abstractions.PlayListRepository;
 import org.media_player.domain.entities.media.Audio;
 import org.media_player.domain.entities.playList.AudioPlayList;
@@ -19,16 +19,20 @@ public class AudioPlayListService implements PlayListService<Audio> {
 
     @Override
     public void createPlayList(String playListName, User user) {
+        if (playListRepository.getPlayList(playListName) != null) {
+            throw new PlayListException("PlayList already exists with the name " + playListName);
+        }
         playListRepository.createPlayList(new AudioPlayList(playListName, user));
+
     }
 
     @Override
     public void addMediaFileToPlayList(String playListName, Audio mediaFile) {
         AudioPlayList playList = playListRepository.getPlayList(playListName);
         if (playList == null) {
-            throw new PlayListNotFoundException("PlayList not found");
+            throw new PlayListException("PlayList not found");
         } else if (mediaFile == null) {
-            throw new MediaFileNotFoundException("Audio not found");
+            throw new MediaFileException("Audio not found");
         } else if (playList.getMediaFiles().contains(mediaFile)) {
             throw new IllegalArgumentException("Audio already exists in the playlist");
         }
@@ -40,9 +44,9 @@ public class AudioPlayListService implements PlayListService<Audio> {
     public void removeMediaFileFromPlayList(String playListName, Audio mediaFile) {
         AudioPlayList playList = playListRepository.getPlayList(playListName);
         if (playList == null) {
-            throw new PlayListNotFoundException("PlayList not found");
+            throw new PlayListException("PlayList not found");
         } else if (mediaFile == null) {
-            throw new MediaFileNotFoundException("Audio not found");
+            throw new MediaFileException("Audio not found");
         } else if (!playList.getMediaFiles().contains(mediaFile)) {
             throw new IllegalArgumentException("Audio does not exist in the playlist");
         }
@@ -54,7 +58,7 @@ public class AudioPlayListService implements PlayListService<Audio> {
     public void deletePlayList(String playListName) {
         AudioPlayList playList = playListRepository.getPlayList(playListName);
         if (playList == null) {
-            throw new PlayListNotFoundException("PlayList not found");
+            throw new PlayListException("PlayList not found");
         }
         playListRepository.deletePlayList(playList);
     }
@@ -68,7 +72,7 @@ public class AudioPlayListService implements PlayListService<Audio> {
     public List<Audio> getMediaFilesFromPlayList(String playListName) {
         AudioPlayList playList = playListRepository.getPlayList(playListName);
         if (playList == null) {
-            throw new PlayListNotFoundException("PlayList not found");
+            throw new PlayListException("PlayList not found");
         }
         return playList.getMediaFiles();
     }
