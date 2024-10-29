@@ -1,14 +1,27 @@
 package org.media_player.domain.entities.media;
 
-public class Video implements MediaFile {
+import org.media_player.domain.entities.observers.AudioMediaObserver;
+import org.media_player.domain.entities.observers.MediaObserver;
+import org.media_player.domain.entities.observers.MediaSubject;
+import org.media_player.domain.entities.observers.VideoMediaObserver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Video implements MediaFile, MediaSubject {
     private String fileName;
     private String filePath;
     private String fileExtension;
+    private List<MediaObserver> observers;
+    private String state;
 
     public Video(String fileName, String filePath, String fileExtension) {
         this.fileName = fileName;
         this.filePath = filePath;
         this.fileExtension = fileExtension;
+        this.observers = new ArrayList<>();
+        addObserver(new VideoMediaObserver());
+
     }
 
     @Override
@@ -28,25 +41,47 @@ public class Video implements MediaFile {
 
     @Override
     public void play() {
-        System.out.println("Playing video file: " + fileName);
+        state = "Playing";
+        notifyObservers(state);
     }
 
     @Override
     public void stop() {
-        System.out.println("Stopping video file: " + fileName);
+        state = "Stopped";
+        notifyObservers(state);
     }
 
     @Override
     public void pause() {
-        System.out.println("Pausing video file: " + fileName);
+        state = "Paused";
+        notifyObservers(state);
     }
 
     @Override
     public void setVolume(int volume) {
-        System.out.println("Setting volume to: " + volume);
+        state = "Volume" + volume;
+        notifyObservers(state);
     }
 
     public void setBrightness(int brightness) {
-        System.out.println("Setting brightness to: " + brightness);
+        state = "Brightness" + brightness;
+        notifyObservers(state);
+    }
+
+    @Override
+    public void addObserver(MediaObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(MediaObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String message) {
+        for (MediaObserver observer : observers) {
+            observer.update(message);
+        }
     }
 }
