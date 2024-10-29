@@ -68,6 +68,14 @@ public class Video implements MediaFile, MediaSubject {
         notifyObservers(state);
     }
 
+    public List<MediaObserver> getObservers() {
+        return observers;
+    }
+
+    public String getState() {
+        return state;
+    }
+
     @Override
     public void addObserver(MediaObserver observer) {
         observers.add(observer);

@@ -6,6 +6,7 @@ import org.media_player.domain.entities.observers.MediaSubject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Audio implements MediaFile, MediaSubject {
     private String fileName;
@@ -67,6 +68,14 @@ public class Audio implements MediaFile, MediaSubject {
         notifyObservers(state);
     }
 
+    public List<MediaObserver> getObservers() {
+        return observers;
+    }
+
+    public String getState() {
+        return state;
+    }
+
     @Override
     public void addObserver(MediaObserver observer) {
         observers.add(observer);
@@ -74,7 +83,10 @@ public class Audio implements MediaFile, MediaSubject {
 
     @Override
     public void removeObserver(MediaObserver observer) {
-        observers.remove(observer);
+        //stream to remove observer
+        //observers.stream().filter(o->o!=observer).collect(Collectors.toList());
+        observers.removeIf(o->o.equals(observer));
+
     }
 
     @Override

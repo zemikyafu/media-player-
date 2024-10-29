@@ -2,7 +2,6 @@ package UnitTests;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.media_player.application.exceptions.MediaFileException;
 import org.media_player.application.exceptions.PlayListException;
 import org.media_player.application.services.AudioPlayListService;
 import org.media_player.domain.abstractions.PlayListRepository;

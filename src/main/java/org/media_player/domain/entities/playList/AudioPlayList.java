@@ -20,13 +20,11 @@ public class AudioPlayList implements PlayList<Audio> {
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
+    public String getName() {return this.name;}
 
     @Override
     public User getOwner() {
-        return null;
+        return this.owner;
     }
 
     @Override
