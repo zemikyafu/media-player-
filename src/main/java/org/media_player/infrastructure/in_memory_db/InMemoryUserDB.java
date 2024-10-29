@@ -17,7 +17,8 @@ public class InMemoryUserDB {
     }
 
     public void save(User user) {
-        user.setId(generateId());
+        int id = generateId();
+        user.setId(id);
         users.add(user);
     }
 
@@ -36,7 +37,7 @@ public class InMemoryUserDB {
     }
 
     public void deleteUserById(int id) {
-        users.remove(id);
+        users.removeIf(user -> user.getId() == id);
     }
 
     public void deleteUserByEmail(String email) {
